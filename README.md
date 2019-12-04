@@ -2,6 +2,8 @@
 
 Utility for generating open api spec documentation and enabling swagger ui for openfaas functions.
 
+Uses the openfaas annotations to pulls the swagger config
+
 ### About
 
 * Swagger UI to serve the swagger yaml
@@ -57,6 +59,8 @@ Change the docker image to point to the docker repo where this utility image was
 ### Using the utility
 
 Add your api spec (json format) in the function descriptor as annotation. Use this [example](./example.yaml).
+
+After deploying your function with this annotation, you should be able see the paths in swagger ui
 
 * We are following open api 3.0 spec
 * Please make sure the json is well formatted.
