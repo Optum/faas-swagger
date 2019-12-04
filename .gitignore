@@ -1,0 +1,42 @@
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.deploy/
+statik/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### Docker ###
+.testcontainers-tmp-*
+
+### Project ###
+TODO.md
+todo/
+out
+
+release/
+vendor/

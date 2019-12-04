@@ -1,0 +1,26 @@
+Faas Swagger
+Copyright 2018 Optum
+
+Project Description:
+====================
+
+Utility for generating open api spec documentation for openfaas functions.
+
+
+Faas Swagger Authors:
+©Optum 2018
+
+
+
+
+Added Files:
+============
+
+
+
+
+
+
+
+Modified Files:
+===============
