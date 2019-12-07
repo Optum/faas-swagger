@@ -7,20 +7,9 @@ Project Description:
 Utility for generating open api spec documentation for openfaas functions.
 
 
-Faas Swagger Authors:
-©Optum 2018
+Authors:
+========
 
+Murugappan Sevugan Chetty (@itsmurugappan)
 
-
-
-Added Files:
-============
-
-
-
-
-
-
-
-Modified Files:
-===============
+©Optum 2019
