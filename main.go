@@ -5,7 +5,9 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"net/url"
 	"net/http"
+	"net/http/httputil"
 	"os"
 
 	"github.com/ghodss/yaml"
@@ -20,9 +22,15 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	gateway, _ := os.LookupEnv("openfaas_gateway")
+	u, _ := url.Parse(gateway+"/function/")
 
 	http.Handle("/swaggerui/", http.StripPrefix("/swaggerui/", http.FileServer(statikFS)))
 	http.HandleFunc("/swagger.yaml", generateSwaggerYmlHandler)
+
+	//reverse proxy openfaas requests
+	http.Handle("/", httputil.NewSingleHostReverseProxy(u))
+
 	http.ListenAndServe(":8080", nil)
 
 }
