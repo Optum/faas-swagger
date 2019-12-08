@@ -4,8 +4,8 @@ Swagger interface for openfaas functions
 
 ### Whats it About
 
-* Swagger end point for openfaas function
-* Uses the annotations in the function descriptor yml to pull the swagger config.
+* Document your Openfaas functions in OpenAPI 3.0 Spec and visualize it in a swagger ui.
+* Uses the annotations in the function descriptor yml to look for the swagger config.
 * Test functions from swagger ui
 
 ----------------
