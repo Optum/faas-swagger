@@ -14,7 +14,7 @@ Swagger interface for openfaas functions
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=ENpaz0Rh0u0
 " target="_blank"><img src="http://img.youtube.com/vi/ENpaz0Rh0u0/0.jpg" 
-alt="Demo Swagger Faas" width="240" height="180" border="10" /></a>
+alt="Demo Swagger Faas" width="480" height="360" border="20" /></a>
 
 ----------------
 
@@ -22,9 +22,9 @@ alt="Demo Swagger Faas" width="240" height="180" border="10" /></a>
 
 Use the make file to build the utility. The make file request for 3 parameters.
 
- 1. Path where this utility is going to serve the swagger.yml
- 2. Openfaas gateway. If you are planning to deploy this utility in the same namsepace as openfaas (which we recomend) the url will be http://gateway:8080
- 3. Your docker hub where this utility image will be pushed
+* Path where this utility is going to serve the swagger.yml
+* Openfaas gateway. If you are planning to deploy this utility in the same namsepace as openfaas (which we recommend) the url will be http://gateway:8080
+* Your docker hub where this utility image will be pushed
 
 All the artifacts will be stored in the .deploy folder.
 
