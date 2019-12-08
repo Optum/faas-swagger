@@ -1,58 +1,32 @@
 # Swagger for Openfaas
 
-Utility for generating open api spec documentation and enabling swagger ui for openfaas functions.
+Swagger interface for openfaas functions
 
-Uses the openfaas annotations to pulls the swagger config
+### Whats it About
 
-### About
+* Swagger end point for openfaas function
+* Uses the annotations in the function descriptor yml to pull the swagger config.
+* Test functions from swagger ui
 
-* Swagger UI to serve the swagger yaml
-* On loading the swagger UI, the yml is generated on the fly by looking at the annotations on openfaas functions
-* Just a page refresh would load any new changes
-* Test functions from swagger
+----------------
+
+### Demo
+
+[![Demo](./images/swagger.jpeg)](https://youtu.be/ENpaz0Rh0u0)
 
 ----------------
 
 ### Build and Deploy the Utility
 
-#### Static content
+Use the make file to build the utility. The make file request for 3 parameters.
 
-Use [statik](https://github.com/rakyll/statik) to generate the static files related to swagger ui
+1. Path where the swagger.yml will be hosted, this is the path where this utility is going to serve the swagger.yml
+2. Openfaas gateway. If you are planning to deploy this utility in the same namsepace as openfaas (which we recomend) the url will be http://gateway:8080
+3. your docker hub where this utility image will be pushed
 
-`Before generating the static binary, please change the following swagger.yaml path in swaggerui/index.html. 
-This is the path where this utility is serving the swagger yaml. http://host:port/swagger.yaml`
+All the artifacts will be stored in the .deploy folder.
 
-```
-statik -src=swaggerui/
-```
-This should generate a folder called statik
-
-#### Build the go binary, docker and push
-```
-CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o release/faas-swagger .
-```
-
-#### Deploy
-
-Use the k8.yaml to deploy to your kubernetes environment.
-
-Change the following before deployment
-
-##### 1. Environment variables
-
-Provide the below environment variables while deploying
-
-* `openfaas_gateway` - gateway url
-* `swagger_file_path` - location of swagger files (mentioned in dockerfile)
-
-##### 2. Configuration Map
-
-CM named Swagger has the skeleton swagger yaml.
-Change the server url in the k8.yaml to gateway endpoint
-
-##### 3. Docker Image
-
-Change the docker image to point to the docker repo where this utility image was pushed.
+Once built, push image to the repo and deploy with k8.yaml in .deploy folder
 
 -------------
 
@@ -64,15 +38,14 @@ After deploying your function with this annotation, you should be able see the p
 
 * We are following open api 3.0 spec
 * Please make sure the json is well formatted.
-* In swagger 3.0 the spec is defined in yaml. You can define in yaml and convert to json using online editor like [this](https://codebeautify.org/yaml-to-json-xml-csv)
+* In swagger 3.0, the spec is defined in yaml. You can define in yaml and convert to json using online editor like [this](https://codebeautify.org/yaml-to-json-xml-csv)
 * If annotatation is not provided , by default just the path will be shown.
 
 ---------
 
 ### Authentication
 
-Authentication in faas-swagger is designed to work with openfaas deployed behind a proxy. 
-Currently does not support Openfaas auth plugins.
+Currently does not support Openfaas auth plugins. But will work if openfaas is deployed behind a proxy and the proxy is handling the auth needs.
 
 ----------
 ### Contributing to the Project
