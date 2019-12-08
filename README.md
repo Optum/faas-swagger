@@ -12,7 +12,9 @@ Swagger interface for openfaas functions
 
 ### Demo
 
-[![Demo](./images/swagger.jpg)](https://youtu.be/ENpaz0Rh0u0)
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=ENpaz0Rh0u0
+" target="_blank"><img src="http://img.youtube.com/vi/ENpaz0Rh0u0/0.jpg" 
+alt="Demo Swagger Faas" width="240" height="180" border="10" /></a>
 
 ----------------
 
