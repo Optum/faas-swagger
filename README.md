@@ -12,7 +12,7 @@ Swagger interface for openfaas functions
 
 ### Demo
 
-[![Demo](./images/swagger)](https://youtu.be/ENpaz0Rh0u0)
+[![Demo](./images/swagger.jpg)](https://youtu.be/ENpaz0Rh0u0)
 
 ----------------
 
