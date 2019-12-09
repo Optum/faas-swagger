@@ -1,4 +1,4 @@
-module github.optum.com/Optum-Serverless/faas-swagger
+module github.com/optum/faas-swagger
 
 go 1.13
 
