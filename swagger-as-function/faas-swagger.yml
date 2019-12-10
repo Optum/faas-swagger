@@ -8,6 +8,6 @@ functions:
     handler: ./faas-swagger
     image: murugappans/faas-swagger:latest
     environment:
-      openfaas_gateway: "http://gateway:8080"
+      openfaas_gateway: "http://gateway.openfaas:8080"
     secrets:
     - swagger    
