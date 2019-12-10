@@ -1,4 +1,4 @@
-# Swagger as openfaas functions
+# faas-swagger as Openfaas function
 
 You can deploy this utility as a openfaas function
 
