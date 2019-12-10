@@ -20,9 +20,8 @@ alt="Demo Swagger Faas" width="480" height="360" border="20" /></a>
 
 ### Build and Deploy the Utility
 
-Use the Make file to build the utility. The Make file will request for 3 parameters.
+Use the Make file to build the utility. The Make file will request for 2 parameters.
 
-* Path where this utility is going to serve the swagger.yml
 * Openfaas gateway. If you are planning to deploy this utility in the same namsepace as openfaas (which we recommend) the url will be http://gateway:8080
 * Your docker hub where this utility image will be pushed
 
