@@ -1,51 +1,21 @@
-package main
+package function
 
 import (
 	"encoding/json"
-	"io"
 	"io/ioutil"
 	"log"
-	"net/url"
 	"net/http"
-	"net/http/httputil"
 	"os"
 
 	"github.com/ghodss/yaml"
 	types "github.com/openfaas/faas-provider/types"
-	"github.com/rakyll/statik/fs"
-	_ "github.com/optum/faas-swagger/statik"
 )
 
-func main() {
-
-	statikFS, err := fs.New()
-	if err != nil {
-		panic(err)
-	}
-
-	http.Handle("/swaggerui/", http.StripPrefix("/swaggerui/", http.FileServer(statikFS)))
-	http.HandleFunc("/swagger.yaml", generateSwaggerYmlHandler)
-
-	//reverse proxy openfaas requests
-	http.HandleFunc("/", serveReverseProxy)
-
-	http.ListenAndServe(":8080", nil)
-
-}
-
-//generate swagger yml
-func generateSwaggerYmlHandler(w http.ResponseWriter, r *http.Request) {
+// Handle a serverless request
+func Handle(req []byte) string {
 	var result map[string]interface{}
 
-	filePath, filePresent := os.LookupEnv("swagger_file_path")
-
-	if !filePresent {
-		log.Fatal("Provide swagger_file_path env variable")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	dat, _ := ioutil.ReadFile(filePath + "/swagger.yaml")
+	dat, _ := ioutil.ReadFile("/var/openfaas/secrets/swagger.yaml")
 
 	yaml.Unmarshal(dat, &result)
 
@@ -53,10 +23,7 @@ func generateSwaggerYmlHandler(w http.ResponseWriter, r *http.Request) {
 
 	out, _ := yaml.Marshal(&result)
 
-	log.Println("successfully generated yml")
-	w.WriteHeader(http.StatusOK)
-	io.WriteString(w, string(out))
-
+	return string(out)
 }
 
 //add paths to swagger yml
@@ -72,8 +39,7 @@ func addPaths(result map[string]interface{}) {
 	}
 
 	var sample map[string]interface{}
-	filePath, _ := os.LookupEnv("swagger_file_path")
-	dat, _ := ioutil.ReadFile(filePath + "/sample.yaml")
+	dat, _ := ioutil.ReadFile("/var/openfaas/secrets/sample.yaml")
 	yaml.Unmarshal(dat, &sample)
 
 	functions := getFunctionsList()
@@ -121,20 +87,4 @@ func getFunctionsList() []byte {
 
 	bytesOut, _ := ioutil.ReadAll(resp.Body)
 	return bytesOut
-}
-
-func serveReverseProxy(res http.ResponseWriter, req *http.Request) {
-	gateway, _ := os.LookupEnv("openfaas_gateway")
-	u, _ := url.Parse(gateway)
-	u.Path = "/function"	
-
-	// create the reverse proxy
-	proxy := httputil.NewSingleHostReverseProxy(u)
-
-	req.URL.Host = u.Host
-	req.URL.Scheme = u.Scheme
-	req.Header.Set("X-Forwarded-Host", req.Header.Get("Host"))
-	req.Host = u.Host
-
-	proxy.ServeHTTP(res, req)
 }

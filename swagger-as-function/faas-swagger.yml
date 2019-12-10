@@ -1,0 +1,13 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://localhost:8080
+functions:
+  faas-swagger-fn:
+    lang: go
+    handler: ./faas-swagger
+    image: murugappans/faas-swagger:latest
+    environment:
+      openfaas_gateway: "http://gateway:8080"
+    secrets:
+    - swagger    
