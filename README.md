@@ -32,6 +32,12 @@ Once built, push image to the repo and deploy with k8.yaml in .deploy folder
 
 -------------
 
+### Deploy as Function
+
+To deploy this utility as a function. Please follow the steps mentioned [here](./swagger-as-function)
+
+-------------
+
 ### Using the utility
 
 Add your api spec (json format) in the function descriptor as annotation. Use this [example](./example.yaml).
