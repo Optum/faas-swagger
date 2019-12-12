@@ -15,7 +15,7 @@ kubectl create secret generic swagger --from-file=swagger.yaml --from-file=sampl
 
 ### Deployment
 
-This function has been built and pushed to murugappans/faas-swagger:latest
+This function has been built and pushed to murugappans/faas-swagger-fn:latest
 
 You can use faas-swagger.yml to deploy this function to your platform. (Change the gateway in the file)
 
