@@ -12,22 +12,20 @@ Swagger interface for openfaas functions
 
 ### Demo
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=ENpaz0Rh0u0
-" target="_blank"><img src="http://img.youtube.com/vi/ENpaz0Rh0u0/0.jpg" 
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=p6Vi5vIjO5I
+" target="_blank"><img src="http://img.youtube.com/vi/p6Vi5vIjO5I/0.jpg" 
 alt="Demo Swagger Faas" width="480" height="360" border="20" /></a>
 
 ----------------
 
-### Build and Deploy the Utility
+### Deploy as Standalone entity 
 
-Use the Make file to build the utility. The Make file will request for 2 parameters.
+* Docker image of the utility is murugappans/faas-swagger
+* Use the k8s-deploy/k8.yaml to deploy to your kubernetes namespace
 
-* Openfaas gateway. If you are planning to deploy this utility in the same namsepace as openfaas (which we recommend) the url will be http://gateway:8080
-* Your docker hub where this utility image will be pushed
-
-All the artifacts will be stored in the .deploy folder.
-
-Once built, push image to the repo and deploy with k8.yaml in .deploy folder
+```
+kubectl apply -f k8s-deploy/k8.yaml -n openfaas
+```
 
 -------------
 

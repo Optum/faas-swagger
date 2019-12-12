@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: faas-swagger-ui
+spec:
+  type : ClusterIP
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: faas-swagger-ui
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: faas-swagger-ui
+  name: faas-swagger-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: faas-swagger-ui
+  template:
+    metadata:
+      labels:
+        app: faas-swagger-ui
+    spec:
+      containers:
+      - name: faas-swagger-ui
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "256Mi"
+          requests:
+            cpu: "60m"
+            memory: "128Mi"
+        env:
+        - name: openfaas_gateway
+          value: "http://gateway:8080"
+        image: murugappans/swaggerui-openfaas
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
