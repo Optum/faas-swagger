@@ -1,9 +1,9 @@
 package basic
 
 import (
-	"log"
-	"net/http"	
 	"io/ioutil"
+	"log"
+	"net/http"
 )
 
 const (

@@ -1,14 +1,14 @@
 package swagger
 
 import (
-	"log"
-	"net/http"	
-	"io/ioutil"	
 	"encoding/json"
+	"io/ioutil"
+	"log"
+	"net/http"
 
 	"github.com/ghodss/yaml"
-	"github.com/pkg/errors"
 	types "github.com/openfaas/faas-provider/types"
+	"github.com/pkg/errors"
 
 	"github.com/optum/faas-swagger/pkg/auth"
 )
@@ -47,10 +47,10 @@ type SwaggerConstructor struct {
 	Gateway          string
 	authPlugin       auth.OFAuth
 	defaultStructure map[string]interface{}
-	sYAML             map[string]interface{}
+	sYAML            map[string]interface{}
 }
 
-//Constructor returns an instance of SwaggerConstructor 
+//Constructor returns an instance of SwaggerConstructor
 func Constructor() *SwaggerConstructor {
 	var swaggerYAML map[string]interface{}
 	dat, _ := ioutil.ReadFile(base_swagger_yaml_path)
@@ -73,7 +73,7 @@ func Constructor() *SwaggerConstructor {
 //GetSwaggerYAML constructs the swagger yaml for all the functions
 //registerd in the openfaas gateway
 func (c *SwaggerConstructor) GetSwaggerYAML() ([]byte, error) {
-	paths := (c.sYAML["paths"]).(map[string]interface{}) 
+	paths := (c.sYAML["paths"]).(map[string]interface{})
 	fndata, err := c.getFunctionsList()
 	if err != nil {
 	}

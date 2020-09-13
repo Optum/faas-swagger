@@ -1,11 +1,10 @@
 package auth
 
 import (
-	"os"	
 	"net/http"
+	"os"
 
 	"github.com/optum/faas-swagger/pkg/auth/basic"
-
 )
 
 type OFAuth interface {
