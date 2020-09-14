@@ -51,7 +51,7 @@ type SwaggerConstructor struct {
 }
 
 //Constructor returns an instance of SwaggerConstructor
-func Constructor() *SwaggerConstructor {
+func Constructor(authPlugin auth.OFAuth) *SwaggerConstructor {
 	var swaggerYAML map[string]interface{}
 	dat, _ := ioutil.ReadFile(base_swagger_yaml_path)
 	yaml.Unmarshal(dat, &swaggerYAML)
@@ -64,7 +64,7 @@ func Constructor() *SwaggerConstructor {
 
 	return &SwaggerConstructor{
 		"http://gateway:8080", //overridable
-		auth.GetAuthPlugin(),
+		authPlugin,
 		def,
 		swaggerYAML,
 	}

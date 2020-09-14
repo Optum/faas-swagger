@@ -23,6 +23,7 @@ func Init() *BasicAuth {
 	}
 }
 
+//AddAuth adds the basic auth in the http request header
 func (ba *BasicAuth) AddAuth(req *http.Request) error {
 	req.SetBasicAuth(ba.user, ba.pass)
 	return nil
