@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	gateway_suffix         = "/system/functions"
+	functions_path         = "/system/functions"
 	base_swagger_yaml_path = "/var/openfaas/secrets/swagger.yaml"
 )
 
@@ -76,7 +76,7 @@ func (c *SwaggerConstructor) GetSwaggerYAML() ([]byte, error) {
 	paths := (c.sYAML["paths"]).(map[string]interface{})
 	fndata, err := c.getFunctionsList()
 	if err != nil {
-		return nil, error
+		return nil, err
 	}
 	for _, fn := range fndata {
 		anns := *fn.Annotations
@@ -101,7 +101,7 @@ func (c *SwaggerConstructor) GetSwaggerYAML() ([]byte, error) {
 }
 
 func (c *SwaggerConstructor) getFunctionsList() ([]types.FunctionStatus, error) {
-	req, err := http.NewRequest("GET", c.Gateway+gateway_suffix, nil)
+	req, err := http.NewRequest("GET", c.Gateway+functions_path, nil)
 	c.authPlugin.AddAuth(req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
