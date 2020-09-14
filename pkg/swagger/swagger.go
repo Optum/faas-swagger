@@ -76,6 +76,7 @@ func (c *SwaggerConstructor) GetSwaggerYAML() ([]byte, error) {
 	paths := (c.sYAML["paths"]).(map[string]interface{})
 	fndata, err := c.getFunctionsList()
 	if err != nil {
+		return nil, error
 	}
 	for _, fn := range fndata {
 		anns := *fn.Annotations
