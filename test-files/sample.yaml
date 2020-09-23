@@ -1,9 +1,0 @@
-post:
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-  responses:
-    "200":
-      description: success

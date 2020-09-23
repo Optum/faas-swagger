@@ -51,7 +51,7 @@ type SwaggerConstructor struct {
 }
 
 //Constructor returns an instance of SwaggerConstructor
-func Constructor(authPlugin auth.OFAuth) *SwaggerConstructor {
+func Constructor(gatewayURL string, authPlugin auth.OFAuth) *SwaggerConstructor {
 	var swaggerYAML map[string]interface{}
 	dat, _ := ioutil.ReadFile(base_swagger_yaml_path)
 	yaml.Unmarshal(dat, &swaggerYAML)
@@ -63,7 +63,7 @@ func Constructor(authPlugin auth.OFAuth) *SwaggerConstructor {
 	json.Unmarshal([]byte(defaultStructure), &def)
 
 	return &SwaggerConstructor{
-		"http://gateway:8080", //overridable
+		gatewayURL,
 		authPlugin,
 		def,
 		swaggerYAML,
@@ -102,18 +102,23 @@ func (c *SwaggerConstructor) GetSwaggerYAML() ([]byte, error) {
 
 func (c *SwaggerConstructor) getFunctionsList() ([]types.FunctionStatus, error) {
 	req, err := http.NewRequest("GET", c.Gateway+functions_path, nil)
+	if err != nil {
+		return nil, errors.Wrap(err, "error connecting to the given openfaas gateway")
+	}
 	c.authPlugin.AddAuth(req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, errors.Wrap(err, "Can't connect to the given openfaas gateway")
+		return nil, errors.Wrap(err, "error connecting to the given openfaas gateway")
 	}
 	if resp.Body != nil {
 		defer resp.Body.Close()
 	}
 
-	bytesOut, _ := ioutil.ReadAll(resp.Body)
-
+	bytesOut, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, "error getting payload")
+	}
 	if string(bytesOut) == "" {
 		return nil, EmptyResponse
 	}

@@ -1,0 +1,12 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://localhost:8080
+functions:
+  faas-swagger-fn:
+    lang: go
+    handler: ./faas-swagger
+    image: murugappans/faas-swagger-fn:v2
+    secrets:
+    - swagger
+    - basic-auth
