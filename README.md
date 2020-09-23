@@ -49,13 +49,13 @@ After deploying your function with this annotation, you should be able see the p
 
 Supports the basic auth plugin.
 
-Implement the [OFAuth](./auth/auth.go) interface for other options
+Implement the [OFAuth](./pkg/auth/auth.go) interface for other options
 
 -----------------
 
 ### GO Packages
 
-The [swagger](./swagger) package can be used as a standalone in your GO function. 
+The [swagger](./pkg/swagger) package can be used as a standalone in your GO function. 
 
 ----------
 ### Contributing to the Project
