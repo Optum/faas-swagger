@@ -13,7 +13,7 @@ This function requires couple of secrets to be created
 $ kubectl create secret generic swagger --from-file=swagger.yaml -n openfaas-fn
 ```
 
-1. Create the basic auth secret in `openfaas-fn` namespace. 
+2. Create the basic auth secret in `openfaas-fn` namespace. 
 This is the same secret that is created in `openfaas` namespace.
 
 ### Deployment
