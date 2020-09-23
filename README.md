@@ -1,5 +1,7 @@
 # Swagger for Openfaas
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/optum/faas-swagger)](https://goreportcard.com/badge/github.com/optum/faas-swagger)
+
 Swagger interface for openfaas functions
 
 ### Whats it About
