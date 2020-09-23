@@ -102,11 +102,14 @@ func (c *SwaggerConstructor) GetSwaggerYAML() ([]byte, error) {
 
 func (c *SwaggerConstructor) getFunctionsList() ([]types.FunctionStatus, error) {
 	req, err := http.NewRequest("GET", c.Gateway+functions_path, nil)
+	if err != nil {
+		return nil, errors.Wrap(err, "error connecting to the given openfaas gateway")
+	}	
 	c.authPlugin.AddAuth(req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, errors.Wrap(err, "Can't connect to the given openfaas gateway")
+		return nil, errors.Wrap(err, "error connecting to the given openfaas gateway")
 	}
 	if resp.Body != nil {
 		defer resp.Body.Close()
