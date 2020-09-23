@@ -1,34 +1,41 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: of-swagger-ui
+---
+apiVersion: v1
 kind: Service
 metadata:
-  name: faas-swagger-ui
+  name: of-swagger-ui
+  namespace: of-swagger-ui
 spec:
-  type : ClusterIP
+  type : LoadBalancer
   ports:
   - name: http
     port: 8080
     targetPort: 8080
   selector:
-    app: faas-swagger-ui
+    app: of-swagger-ui
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: faas-swagger-ui
-  name: faas-swagger-ui
+    app: of-swagger-ui
+  name: of-swagger-ui
+  namespace: of-swagger-ui
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: faas-swagger-ui
+      app: of-swagger-ui
   template:
     metadata:
       labels:
-        app: faas-swagger-ui
+        app: of-swagger-ui
     spec:
       containers:
-      - name: faas-swagger-ui
+      - name: of-swagger-ui
         resources:
           limits:
             cpu: "100m"
@@ -37,9 +44,9 @@ spec:
             cpu: "60m"
             memory: "128Mi"
         env:
-        - name: openfaas_gateway
-          value: "http://gateway:8080"
-        image: murugappans/swaggerui-openfaas
+        - name: OPENFAAS_GATEWAY
+          value: "http://gateway.openfaas:8080"
+        image: ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

@@ -1,22 +1,12 @@
 version: 1.0
 provider:
   name: openfaas
-  gateway: http://127.0.0.1:8080
+  gateway: http://localhost:8080
 functions:
-  test:
-    lang: python
-    handler: ./test
-    image: test:latest
-    secrets:
-    - secret-api-key
-    limits:
-      cpu: 100m
-      memory: 256Mi
-    requests:
-      cpu: 50m
-      memory: 128Mi
-    labels:
-      com.openfaas.scale.zero: true     
+  go-hw:
+    lang: go
+    handler: ./go-hw
+    image: murugappans/go-hw:latest
     annotations:
       swagger: "{
                   \"get\": {

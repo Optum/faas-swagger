@@ -10,34 +10,29 @@ Swagger interface for openfaas functions
 
 ----------------
 
-### Demo
-
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=-mjAcvc6kK8
-" target="_blank"><img src="http://img.youtube.com/vi/-mjAcvc6kK8/0.jpg" 
-alt="Demo Swagger Faas" width="480" height="360" border="20" /></a>
+![](assets/output.gif)
 
 ----------------
 
-### Deploy as Standalone entity 
+### Function
 
-* Docker image of the utility is murugappans/faas-swagger
-* Use the k8s-deploy/k8.yaml to deploy to your kubernetes namespace
+Navigate to the [function](./function) folder to deploy the swagger yaml generator.
+
+-----------------
+
+### UI
+
+The function will generate the swagger yaml. To visualize, deploy the swaggerui-proxy component as below 
 
 ```
-kubectl apply -f k8s-deploy/k8.yaml -n openfaas
+ko apply -RBf config/
 ```
 
--------------
+Once the component is created access the ui at `/swaggerui/` path.
 
-### Deploy as Function
+### Usage
 
-To deploy this utility as a function. Please follow the steps mentioned [here](./swagger-as-function)
-
--------------
-
-### Using the utility
-
-Add your api spec (json format) in the function descriptor as annotation. Use this [example](./example.yaml).
+Add your api spec (json format) in the function descriptor(stack.yaml) as annotation. Use this [example](./example.yaml).
 
 After deploying your function with this annotation, you should be able see the paths in swagger ui
 
@@ -50,7 +45,15 @@ After deploying your function with this annotation, you should be able see the p
 
 ### Authentication
 
-Currently does not support Openfaas auth plugins. But will work if openfaas is deployed behind a proxy and the proxy is handling the auth needs.
+Supports the basic auth plugin.
+
+Implement the [OFAuth](./auth/auth.go) interface for other options
+
+-----------------
+
+### GO Packages
+
+The [swagger](./swagger) package can be used as a standalone in your GO function. 
 
 ----------
 ### Contributing to the Project
