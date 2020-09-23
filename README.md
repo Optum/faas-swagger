@@ -30,6 +30,8 @@ ko apply -RBf config/
 
 Once the component is created access the ui at `/swaggerui/` path.
 
+------------------
+
 ### Usage
 
 Add your api spec (json format) in the function descriptor(stack.yaml) as annotation. Use this [example](./example.yaml).
