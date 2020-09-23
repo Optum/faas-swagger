@@ -104,7 +104,7 @@ func (c *SwaggerConstructor) getFunctionsList() ([]types.FunctionStatus, error) 
 	req, err := http.NewRequest("GET", c.Gateway+functions_path, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "error connecting to the given openfaas gateway")
-	}	
+	}
 	c.authPlugin.AddAuth(req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -115,8 +115,10 @@ func (c *SwaggerConstructor) getFunctionsList() ([]types.FunctionStatus, error) 
 		defer resp.Body.Close()
 	}
 
-	bytesOut, _ := ioutil.ReadAll(resp.Body)
-
+	bytesOut, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, "error getting payload")
+	}
 	if string(bytesOut) == "" {
 		return nil, EmptyResponse
 	}
