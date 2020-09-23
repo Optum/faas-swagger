@@ -1,6 +1,9 @@
 # Swagger for Openfaas
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/optum/faas-swagger)](https://goreportcard.com/badge/github.com/optum/faas-swagger)
+[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white)](https://pkg.go.dev/github.com/optum/faas-swagger)
+[![LICENSE](https://img.shields.io/github/license/knative/serving.svg)](https://github.com/optum/faas-swagger/blob/master/LICENSE)
+
 
 Swagger interface for openfaas functions
 
