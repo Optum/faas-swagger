@@ -111,7 +111,7 @@ jobs:
       run: |
         echo Waiting for Pods to become ready.
         kubectl get pods --all-namespaces
-        kubectl wait pod --for=condition=Ready -n openfaas -l '!job-name'
+        kubectl wait pod --for=condition=Ready --timeout=180s -n openfaas -l '!job-name'
         kubectl get pods --all-namespaces
     - name: login to openfaas and deploy functions
       working-directory: ./src/optum/faas-swaggger
