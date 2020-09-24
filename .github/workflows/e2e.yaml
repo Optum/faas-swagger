@@ -2,10 +2,10 @@ name: E2E tests
 
 on:
   pull_request:
-    branches: [ 'master', 'workflows' ]
+    branches: [ 'master']
 
   push:
-    branches: [ 'master' ]
+    branches: [ 'master', 'workflows' ]
 
 jobs:
 
