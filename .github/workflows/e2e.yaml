@@ -71,17 +71,6 @@ jobs:
             -d --restart=always -p "${reg_port}:5000" --name "${reg_name}" \
             registry:2
         fi
-    - name: publish swagger ui
-      working-directory: ./src/github.com/optum/faas-swaggger
-      run: |
-        export GO111MODULE=on
-        export GOPROXY=direct
-        export GOSUMDB=off
-        echo $GOPATH
-        pwd
-        sed "s#ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy#localhost:5000/swaggerui-proxy#g" config/100-swaggerui-proxy.yaml > temp.yaml
-        ls -la static
-        ko publish -B ./cmd/swaggerui-proxy
     - name: Create KinD Cluster
       working-directory: ./src/github.com/optum/faas-swaggger
       run: |
@@ -149,6 +138,15 @@ jobs:
     - name: deploy swagger ui and proxy
       working-directory: ./src/github.com/optum/faas-swaggger
       run: |
+        export GO111MODULE=on
+        export GOPROXY=direct
+        export GOSUMDB=off
+        echo $GOPATH
+        pwd
+        sed "s#ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy#localhost:5000/swaggerui-proxy#g" config/100-swaggerui-proxy.yaml > temp.yaml
+        ls -la static
+        ko publish -B ./cmd/swaggerui-proxy
+        docker pull localhost:5000/swaggerui-proxy
         kind load docker-image localhost:5000/swaggerui-proxy
         kubectl apply -f temp.yaml
         kubectl get pods --all-namespaces
