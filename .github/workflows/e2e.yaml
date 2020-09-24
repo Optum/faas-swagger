@@ -32,7 +32,7 @@ jobs:
     env:
       GOPATH: ${{ github.workspace }}
       GO111MODULE: off
-      KO_DOCKER_REPO: kind.local
+      KO_DOCKER_REPO: localhost:5000
 
     steps:
     - name: Set up Go 1.15.x
@@ -97,7 +97,7 @@ jobs:
       run: |
         set -x
         curl -sLS https://dl.get-arkade.dev | sudo sh
-        arkade install openfaas
+        arkade install openfaas --set=faasNetes.imagePullPolicy=IfNotPresent
         curl -sSL https://cli.openfaas.com | sudo sh
     - name: Wait for Ready
       working-directory: ./src/optum/faas-swaggger
@@ -117,12 +117,16 @@ jobs:
         cd function
         kubectl create secret generic swagger --from-file=swagger.yaml -n openfaas-fn
         faas-cli up -f faas-swagger.yaml
+        kind load docker-image localhost:5000/faas-swagger-fn
         faas-cli deploy -f ./../lib/test/test-files/example/example.yaml
         cd ..
     - name: deploy swagger ui and proxy
       working-directory: ./src/optum/faas-swaggger
       run: |
-        ko apply -RBf config/
+        sed "s#ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy#localhost:5000/swaggerui-proxy#g" config/100-swaggerui-proxy.yaml > temp.yaml
+        ko publish -B github.com/optum/faas-swagger/cmd/swaggerui-proxy
+        kind load docker-image localhost:5000/swaggerui-proxy
+        kubectl apply -f temp.yaml
     - name: Run e2e Tests
       working-directory: ./src/optum/faas-swaggger
       run: |

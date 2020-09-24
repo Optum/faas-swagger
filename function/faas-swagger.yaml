@@ -6,7 +6,7 @@ functions:
   faas-swagger-fn:
     lang: go
     handler: ./faas-swagger
-    image: kind.local/faas-swagger-fn:latest
+    image: localhost:5000/faas-swagger-fn
     secrets:
     - swagger
     - basic-auth

@@ -47,7 +47,7 @@ spec:
         env:
         - name: OPENFAAS_GATEWAY
           value: "http://gateway.openfaas:8080"
-        image: ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy
+        image: localhost:5000/swaggerui-proxy
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
