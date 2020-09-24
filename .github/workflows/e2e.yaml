@@ -46,10 +46,10 @@ jobs:
     - name: Check out code onto GOPATH
       uses: actions/checkout@v2
       with:
-        path: ./src/optum/faas-swaggger
+        path: ./src/github.com/optum/faas-swaggger
 
     - name: Install KinD
-      working-directory: ./src/optum/faas-swaggger
+      working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         set -x
         # Disable swap otherwise memory enforcement doesn't work
@@ -60,7 +60,7 @@ jobs:
         chmod +x ./kind
         sudo mv kind /usr/local/bin
     - name: Create local registry
-      working-directory: ./src/optum/faas-swaggger
+      working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         set -x
         reg_name='kind-registry'
@@ -72,7 +72,7 @@ jobs:
             registry:2
         fi
     - name: Create KinD Cluster
-      working-directory: ./src/optum/faas-swaggger
+      working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         set -x
         # KinD configuration.
@@ -105,21 +105,21 @@ jobs:
         # Create a cluster!
         kind create cluster --config kind.yaml
     - name: Install Openfaas
-      working-directory: ./src/optum/faas-swaggger
+      working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         set -x
         curl -sLS https://dl.get-arkade.dev | sudo sh
         arkade install openfaas --set=faasNetes.imagePullPolicy=IfNotPresent
         curl -sSL https://cli.openfaas.com | sudo sh
     - name: Wait for Ready
-      working-directory: ./src/optum/faas-swaggger
+      working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         echo Waiting for Pods to become ready.
         kubectl get pods --all-namespaces
         kubectl wait pod --for=condition=Ready --timeout=180s -n openfaas -l '!job-name'
         kubectl get pods --all-namespaces
     - name: login to openfaas and deploy functions
-      working-directory: ./src/optum/faas-swaggger
+      working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         set -x
         BAP=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-password}'| base64 --decode) )
@@ -133,7 +133,7 @@ jobs:
         faas-cli deploy -f ./../lib/test/test-files/example/example.yaml
         cd ..
     - name: deploy swagger ui and proxy
-      working-directory: ./src/optum/faas-swaggger
+      working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         sed "s#ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy#localhost:5000/swaggerui-proxy#g" config/100-swaggerui-proxy.yaml > temp.yaml
         ko publish -B github.com/optum/faas-swagger/cmd/swaggerui-proxy
@@ -142,7 +142,7 @@ jobs:
         kubectl get pods --all-namespaces
         kubectl wait pod --for=condition=Ready --timeout=180s -n of-swagger-ui -l '!job-name'
     - name: Run e2e Tests
-      working-directory: ./src/optum/faas-swaggger
+      working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         set -x
         go test -count=1 -tags=e2e ${{ matrix.test-suite }}
