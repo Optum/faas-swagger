@@ -1,0 +1,71 @@
+[{
+  "name": "serverdecommission",
+  "image": "docker.sample.repo.com/test/serverdecommission:latest",
+  "invocationCount": 221,
+  "replicas": 1,
+  "envProcess": "",
+  "availableReplicas": 1,
+  "labels": {
+    "faas_function": "serverdecommission",
+    "uid": "609951028"
+  },
+  "annotations": {
+    "prometheus.io.scrape": "false",
+    "swagger": "{ \"post\": { \"summary\": \"Funcion to decommission a server\", \"requestBody\":{ \"description\": \"user to add to the system\", \"content\":{ \"text/plain\": { \"schema\": { \"type\": \"object\", \"properties\":{ \"serverName\":{ \"type\": \"string\" }, \"userMSID\":{ \"type\": \"string\" } } } } } }, \"responses\": { \"200\": { \"description\": \"Decommission message\", \"content\": { \"text/plain\": { \"schema\": { \"type\": \"string\", \"example\": \"Server Decommission successful\" } } } }, \"404\": { \"description\": \"Invalid server.\" }, \"417\": { \"description\": \"Invalid Data.\" }, \"5XX\": { \"description\": \"Internal API Error.\" } } } }"
+  }
+}, {
+  "name": "serverlesspoc",
+  "image": "docker.sample.repo.com/test/serverlesspoc:latest",
+  "invocationCount": 2,
+  "replicas": 1,
+  "envProcess": "",
+  "availableReplicas": 1,
+  "labels": {
+    "faas_function": "serverlesspoc",
+    "uid": "278090406"
+  },
+  "annotations": {
+    "prometheus.io.scrape": "false"
+  }
+}, {
+  "name": "testgradle",
+  "image": "docker.sample.repo.com/test/serverdecommission:latest",
+  "invocationCount": 202,
+  "replicas": 1,
+  "envProcess": "",
+  "availableReplicas": 1,
+  "labels": {
+    "faas_function": "testgradle",
+    "uid": "620354376"
+  },
+  "annotations": {
+    "prometheus.io.scrape": "false",
+    "swagger": "{ \"post\": { \"summary\" \"Funcion to decommission a server\", \"requestBody\":{ \"description\": \"user to add to the system\", \"content\":{ \"application/json\": { \"schema\": { \"type\": \"object\", \"properties\":{ \"serverName\":{ \"type\": \"string\" } } } } } }, \"responses\": { \"200\": { \"description\": \"Decommission message\", \"content\": { \"text/plain\": { \"schema\": { \"type\": \"string\", \"example\": \"Server Decommission successful\" } } } }, \"404\": { \"description\": \"Invalid server.\" }, \"417\": { \"description\": \"Invalid Data.\" }, \"5XX\": { \"description\": \"Internal API Error.\" } } } }"
+  }
+}, {
+  "name": "testing",
+  "image": "docker.sample.repo.com/test/testing:latest",
+  "invocationCount": 5,
+  "replicas": 1,
+  "envProcess": "",
+  "availableReplicas": 1,
+  "labels": {
+    "faas_function": "testing"
+  },
+  "annotations": {
+    "prometheus.io.scrape": "false"
+  }
+}, {
+  "name": "testopenfaasfunction",
+  "image": "docker.sample.repo.com/test/testopenfaasfunction:latest",
+  "invocationCount": 0,
+  "replicas": 1,
+  "envProcess": "",
+  "availableReplicas": 1,
+  "labels": {
+    "faas_function": "testopenfaasfunction"
+  },
+  "annotations": {
+    "prometheus.io.scrape": "false"
+  }
+}]

@@ -3,18 +3,29 @@ package function
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/optum/faas-swagger/pkg/auth"
 	"github.com/optum/faas-swagger/pkg/swagger"
 )
 
-var c *swagger.SwaggerConstructor
+var (
+	c        *swagger.SwaggerConstructor
+	_testing = false
+)
 
 const (
-	gateway_url = "http://gateway.openfaas:8080"
+	default_gateway_url = "http://gateway.openfaas:8080"
 )
 
 func init() {
+	if _testing {
+		return
+	}
+	gateway_url, present := os.LookupEnv("GATEWAY_URL")
+	if !present {
+		gateway_url = default_gateway_url
+	}
 	c = swagger.Constructor(gateway_url, auth.GetAuthPlugin())
 }
 
