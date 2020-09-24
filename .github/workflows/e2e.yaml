@@ -74,6 +74,9 @@ jobs:
     - name: publish swagger ui
       working-directory: ./src/github.com/optum/faas-swaggger
       run: |
+        export GO111MODULE=on
+        export GOPROXY=direct
+        export GOSUMDB=off
         echo $GOPATH
         pwd
         sed "s#ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy#localhost:5000/swaggerui-proxy#g" config/100-swaggerui-proxy.yaml > temp.yaml
