@@ -59,8 +59,6 @@ jobs:
         curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/${{ matrix.kind-version }}/kind-$(uname)-amd64
         chmod +x ./kind
         sudo mv kind /usr/local/bin
-        curl -sSL https://cli.openfaas.com | sudo sh
-        faas-cli
     - name: Create KinD Cluster
       working-directory: ./src/optum/faas-swaggger
       run: |
@@ -100,13 +98,7 @@ jobs:
         set -x
         curl -sLS https://dl.get-arkade.dev | sudo sh
         arkade install openfaas
-    - name: Create basic auth secret in function namespace
-      working-directory: ./src/optum/faas-swaggger
-      run: |
-        set -x
-        BAP=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-password}'| base64 --decode) )
-        BAU=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-user}'| base64 --decode) )
-        kubectl create secret generic basic-auth --from-literal basic-auth-password=$BAP  --from-literal basic-auth-user=$BAU -n openfaas-fn
+        curl -sSL https://cli.openfaas.com | sudo sh
     - name: Wait for Ready
       working-directory: ./src/optum/faas-swaggger
       run: |
@@ -117,6 +109,10 @@ jobs:
     - name: login to openfaas and deploy functions
       working-directory: ./src/optum/faas-swaggger
       run: |
+        set -x
+        BAP=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-password}'| base64 --decode) )
+        BAU=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-user}'| base64 --decode) )
+        kubectl create secret generic basic-auth --from-literal basic-auth-password=$BAP  --from-literal basic-auth-user=$BAU -n openfaas-fn
         faas-cli login -u $BAU -p $BAP
         cd function
         kubectl create secret generic swagger --from-file=swagger.yaml -n openfaas-fn
