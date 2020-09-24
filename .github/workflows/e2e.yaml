@@ -155,4 +155,5 @@ jobs:
       working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         set -x
+        export GO111MODULE=on
         go test -count=1 -tags=e2e ${{ matrix.test-suite }}
