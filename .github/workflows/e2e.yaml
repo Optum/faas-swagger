@@ -129,7 +129,7 @@ jobs:
         cd function
         kubectl create secret generic swagger --from-file=swagger.yaml -n openfaas-fn
         faas-cli build -f faas-swagger.yaml
-        faas-cli publish -f faas-swagger.yaml
+        faas-cli push -f faas-swagger.yaml
         kind load docker-image localhost:5000/faas-swagger-fn
         faas-cli deploy -f faas-swagger.yaml
         faas-cli deploy -f ./../lib/test/test-files/example/example.yaml
