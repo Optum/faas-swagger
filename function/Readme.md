@@ -18,7 +18,7 @@ This is the same secret that is created in `openfaas` namespace.
 
 ```bash
 $ BAP=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-password}') )
-$ BAU=( $(k get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-user}') )
+$ BAU=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-user}') )
 $ kubectl create secret generic basic-auth --from-literal basic-auth-password=$BAP  --from-literal basic-auth-user=$BAU -n openfaas-fn
 ```
 

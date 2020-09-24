@@ -100,7 +100,7 @@ jobs:
       run: |
         set -x
         BAP=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-password}'| base64 --decode) )
-        BAU=( $(k get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-user}'| base64 --decode) )
+        BAU=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-user}'| base64 --decode) )
         kubectl create secret generic basic-auth --from-literal basic-auth-password=$BAP  --from-literal basic-auth-user=$BAU -n openfaas-fn
     - name: Wait for Ready
       working-directory: ./src/optum/faas-swaggger
