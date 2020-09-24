@@ -138,8 +138,12 @@ jobs:
     - name: deploy swagger ui and proxy
       working-directory: ./src/github.com/optum/faas-swaggger
       run: |
+        go get github.com/rakyll/statik
+        cd static
+        statik -src=swaggerui
+        cd ..
         sed "s#ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy#localhost:5000/swaggerui-proxy#g" config/100-swaggerui-proxy.yaml > temp.yaml
-        ls -la
+        ls -la static
         ko publish -B ./cmd/swaggerui-proxy
         kind load docker-image localhost:5000/swaggerui-proxy
         kubectl apply -f temp.yaml
