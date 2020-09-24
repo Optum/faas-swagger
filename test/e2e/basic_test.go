@@ -36,8 +36,8 @@ func (it *FSTest) checkSwaggerYamlForHW(t *testing.T) {
 	var actual, want map[string]interface{}
 	yaml.Unmarshal(bytesOut, &actual)
 	paths := (actual["paths"]).(map[string]interface{})
-	gohwDoc := paths["/go-hw"]
+	actualDoc := paths["/go-hw"]
 	json.Unmarshal([]byte(GO_HW_SWAGGER_DOC),&want)
 	wantDoc := paths["/go-hw"]
-	assert.DeepEqual(t, &wantDoc, &gohwDoc)
+	assert.DeepEqual(t, &wantDoc, &actualDoc)
 }

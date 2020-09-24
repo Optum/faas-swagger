@@ -132,11 +132,13 @@ jobs:
         kind load docker-image localhost:5000/faas-swagger-fn
         faas-cli deploy -f ./../lib/test/test-files/example/example.yaml
         cd ..
+        kubectl get pods --all-namespaces
     - name: deploy swagger ui and proxy
       working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         sed "s#ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy#localhost:5000/swaggerui-proxy#g" config/100-swaggerui-proxy.yaml > temp.yaml
-        ko publish -B github.com/optum/faas-swagger/cmd/swaggerui-proxy
+        ls -la
+        ko publish -B ./cmd/swaggerui-proxy
         kind load docker-image localhost:5000/swaggerui-proxy
         kubectl apply -f temp.yaml
         kubectl get pods --all-namespaces
