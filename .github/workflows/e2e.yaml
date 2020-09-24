@@ -65,16 +65,20 @@ jobs:
         set -x
         # KinD configuration.
         cat > kind.yaml <<EOF
-        kind: Cluster
         apiVersion: kind.x-k8s.io/v1alpha4
+        kind: Cluster
         nodes:
         - role: control-plane
-          image: kindest/node:v1.19.0
+          image: kindest/node:${{ matrix.k8s-version }}@${{ matrix.kind-image-sha }}
+        - role: worker
+          image: kindest/node:${{ matrix.k8s-version }}@${{ matrix.kind-image-sha }}
           extraPortMappings:
           - containerPort: 31112
             hostPort: 8080
           - containerPort: 31113
             hostPort: 8081
+        # This is needed in order to support projected volumes with service account tokens.
+        # See: https://kubernetes.slack.com/archives/CEKK1KTN2/p1600268272383600
         kubeadmConfigPatches:
           - |
             apiVersion: kubeadm.k8s.io/v1beta2
