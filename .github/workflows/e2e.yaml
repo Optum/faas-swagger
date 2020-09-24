@@ -59,6 +59,18 @@ jobs:
         curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/${{ matrix.kind-version }}/kind-$(uname)-amd64
         chmod +x ./kind
         sudo mv kind /usr/local/bin
+    - name: Create local registry
+      working-directory: ./src/optum/faas-swaggger
+      run: |
+        set -x
+        reg_name='kind-registry'
+        reg_port='5000'
+        running="$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2>/dev/null || true)"
+        if [ "${running}" != 'true' ]; then
+          docker run \
+            -d --restart=always -p "${reg_port}:5000" --name "${reg_name}" \
+            registry:2
+        fi
     - name: Create KinD Cluster
       working-directory: ./src/optum/faas-swaggger
       run: |
@@ -120,6 +132,7 @@ jobs:
         kind load docker-image localhost:5000/faas-swagger-fn
         faas-cli deploy -f ./../lib/test/test-files/example/example.yaml
         cd ..
+        kubectl wait pod --for=condition=Ready --timeout=180s -n openfaas-fn -l '!job-name'
     - name: deploy swagger ui and proxy
       working-directory: ./src/optum/faas-swaggger
       run: |
@@ -127,6 +140,7 @@ jobs:
         ko publish -B github.com/optum/faas-swagger/cmd/swaggerui-proxy
         kind load docker-image localhost:5000/swaggerui-proxy
         kubectl apply -f temp.yaml
+        kubectl wait pod --for=condition=Ready --timeout=180s -n of-swagger-ui -l '!job-name'
     - name: Run e2e Tests
       working-directory: ./src/optum/faas-swaggger
       run: |
