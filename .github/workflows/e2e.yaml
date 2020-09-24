@@ -132,7 +132,6 @@ jobs:
         kind load docker-image localhost:5000/faas-swagger-fn
         faas-cli deploy -f ./../lib/test/test-files/example/example.yaml
         cd ..
-        kubectl wait pod --for=condition=Ready --timeout=180s -n openfaas-fn -l '!job-name'
     - name: deploy swagger ui and proxy
       working-directory: ./src/optum/faas-swaggger
       run: |
@@ -140,6 +139,7 @@ jobs:
         ko publish -B github.com/optum/faas-swagger/cmd/swaggerui-proxy
         kind load docker-image localhost:5000/swaggerui-proxy
         kubectl apply -f temp.yaml
+        kubectl get pods --all-namespaces
         kubectl wait pod --for=condition=Ready --timeout=180s -n of-swagger-ui -l '!job-name'
     - name: Run e2e Tests
       working-directory: ./src/optum/faas-swaggger
