@@ -9,7 +9,6 @@
 .settings
 .springBeans
 .deploy/
-statik/
 
 ### IntelliJ IDEA ###
 .idea
