@@ -99,6 +99,7 @@ jobs:
         curl -sLS https://dl.get-arkade.dev | sudo sh
         arkade install openfaas
         arkade get faas-cli
+        export PATH=$PATH:$HOME/.arkade/bin/
     - name: Create basic auth secret in function namespace
       working-directory: ./src/optum/faas-swaggger
       run: |
