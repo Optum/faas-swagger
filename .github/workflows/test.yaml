@@ -31,4 +31,4 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Test
-        run: go test ./...
+        run: go test $(go list ./... | grep -v /build/ | grep -v /template/) -cover

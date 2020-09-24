@@ -65,15 +65,16 @@ jobs:
         set -x
         # KinD configuration.
         cat > kind.yaml <<EOF
-        apiVersion: kind.x-k8s.io/v1alpha4
         kind: Cluster
+        apiVersion: kind.x-k8s.io/v1alpha4
         nodes:
         - role: control-plane
-          image: kindest/node:${{ matrix.k8s-version }}@${{ matrix.kind-image-sha }}
-        - role: worker
-          image: kindest/node:${{ matrix.k8s-version }}@${{ matrix.kind-image-sha }}
-        # This is needed in order to support projected volumes with service account tokens.
-        # See: https://kubernetes.slack.com/archives/CEKK1KTN2/p1600268272383600
+          image: kindest/node:v1.19.0
+          extraPortMappings:
+          - containerPort: 31112
+            hostPort: 8080
+          - containerPort: 31113
+            hostPort: 8081
         kubeadmConfigPatches:
           - |
             apiVersion: kubeadm.k8s.io/v1beta2
@@ -94,19 +95,34 @@ jobs:
         curl -sLS https://dl.get-arkade.dev | sudo sh
         arkade install openfaas
         arkade get faas-cli
+    - name: Create basic auth secret in function namespace
+      working-directory: ./src/optum/faas-swaggger
+      run: |
+        set -x
+        BAP=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-password}'| base64 --decode) )
+        BAU=( $(k get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-user}'| base64 --decode) )
+        kubectl create secret generic basic-auth --from-literal basic-auth-password=$BAP  --from-literal basic-auth-user=$BAU -n openfaas-fn
     - name: Wait for Ready
       working-directory: ./src/optum/faas-swaggger
       run: |
         echo Waiting for Pods to become ready.
         kubectl wait pod --for=condition=Ready -n openfaas -l '!job-name'
         kubectl get pods --all-namespaces
-    # - name: Run e2e Tests
-    #   working-directory: ./src/optum/faas-swaggger
-    #   run: |
-    #     set -x
-    #     # Exclude the control-plane node, which doesn't seem to expose the nodeport service.
-    #     IPS=( $(kubectl get nodes -lkubernetes.io/hostname!=kind-control-plane -ojsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}') )
-    #     # Run the tests tagged as e2e on the KinD cluster.
-    #     go test -race -count=1 -short -timeout=20m -tags=e2e ${{ matrix.test-suite }} \
-    #        --ingressendpoint="${IPS[0]}" \
-    #        --ingressClass=contour.ingress.networking.knative.dev
+    - name: login to openfaas and deploy functions
+      working-directory: ./src/optum/faas-swaggger
+      run: |
+        faas-cli login -u $BAU -p $BAP
+        cd function
+        kubectl create secret generic swagger --from-file=swagger.yaml -n openfaas-fn
+        faas-cli up -f faas-swagger.yaml
+        faas-cli deploy -f ./../lib/test/test-files/example/example.yaml
+        cd ..
+    - name: deploy swagger ui and proxy
+      working-directory: ./src/optum/faas-swaggger
+      run: |
+        ko apply -RBf config/
+    - name: Run e2e Tests
+      working-directory: ./src/optum/faas-swaggger
+      run: |
+        set -x
+        go test -count=1 -tags=e2e ${{ matrix.test-suite }}

@@ -18,8 +18,7 @@ RUN test -z "$(gofmt -l $(find . -type f -name '*.go' -not -path "./vendor/*" -n
 RUN go mod init 
 
 RUN CGO_ENABLED=${CGO_ENABLED} GOOS=linux \
-    go build --ldflags "-s -w" -a -installsuffix cgo -o handler . && \
-    go test $(go list ./... | grep -v /vendor/) -cover
+    go build --ldflags "-s -w" -a -installsuffix cgo -o handler .
 
 FROM alpine:3.10
 RUN apk --no-cache add \

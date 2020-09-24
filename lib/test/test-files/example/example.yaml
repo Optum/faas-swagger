@@ -1,12 +1,14 @@
 version: 1.0
 provider:
   name: openfaas
-  gateway: http://localhost:8080
+  gateway: http://127.0.0.1:8080
 functions:
   go-hw:
     lang: go
     handler: ./go-hw
     image: murugappans/go-hw:latest
+    environment:
+      write_debug: true
     annotations:
       swagger: "{
                   \"get\": {
