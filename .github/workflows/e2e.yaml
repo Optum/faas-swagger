@@ -32,7 +32,7 @@ jobs:
     env:
       GOPATH: ${{ github.workspace }}
       GO111MODULE: off
-      KO_DOCKER_REPO: localhost:5000
+      KO_DOCKER_REPO: ko.local
 
     steps:
     - name: Set up Go 1.15.x
@@ -127,7 +127,7 @@ jobs:
       run: |
         export GO111MODULE=on
         sed "s#ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy#ko.local/swaggerui-proxy#g" config/100-swaggerui-proxy.yaml > temp.yaml
-        ko publish -B ./cmd/swaggerui-proxy
+        ko publish -B ./cmd/swaggerui-proxy --push=false --local
         kind load docker-image ko.local/swaggerui-proxy
         kubectl apply -f temp.yaml
         kubectl get pods --all-namespaces
