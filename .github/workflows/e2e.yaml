@@ -137,4 +137,4 @@ jobs:
       run: |
         set -x
         export GO111MODULE=on
-        go test -count=1 -tags=e2e ${{ matrix.test-suite }}
+        go test -count=1 -timeout=2m -tags=e2e ${{ matrix.test-suite }}

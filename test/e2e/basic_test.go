@@ -35,7 +35,7 @@ func (it *FSTest) checkSwaggerYamlForHW(t *testing.T) {
 
 	var actual, want map[string]interface{}
 
-	err := yaml.Unmarshal(bytesOut, &actual)
+	err = yaml.Unmarshal(bytesOut, &actual)
 	assert.NilError(t, err)
 	paths := (actual["paths"]).(map[string]interface{})
 	actualDoc := paths[GO_HW_FUNCTION]
