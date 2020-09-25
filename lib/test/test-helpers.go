@@ -1,10 +1,11 @@
 package test
 
 import (
-	"github.com/ghodss/yaml"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/ghodss/yaml"
 )
 
 func GetDataFromFile(pathKey string) []byte {

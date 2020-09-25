@@ -2,10 +2,11 @@ package function
 
 import (
 	"fmt"
-	"gotest.tools/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"gotest.tools/assert"
 
 	"github.com/ghodss/yaml"
 	"github.com/optum/faas-swagger/lib/test"

@@ -18,36 +18,38 @@ const (
 	GO_HW_FUNCTION      = "/go-hw"
 	GO_SWAGGER_FUNCTION = "/faas-swagger-fn"
 	GO_HW_REPONSE       = "Hello, Go. You said: \n"
-	GO_HW_SWAGGER_DOC = `{
-	"/go-hw": {"get": {
-		"summary": "Test function returns greetings",
-		"responses": {
-			"200": {
-				"description": "Return greetings",
-				"content": {
-					"text/plain": {
-						"schema": {
-							"type": "string",
-							"example": "hi"
-						}
-					}
-				}
-			},
-			"401": {
-				"description": "Authorization information is missing or invalid."
-			},
-			"404": {
-				"description": "Requested resouce not found."
-			},
-			"405": {
-				"description": "Method not allowed. Check Authorization"
-			},
-			"5XX": {
-				"description": "Unexpected error."
-			}
-		}
-	}
-}}`
+	GO_HW_SWAGGER_DOC   = `{
+												"/go-hw": {
+													"get": {
+														"summary": "Test function returns greetings",
+														"responses": {
+															"200": {
+																"description": "Return greetings",
+																"content": {
+																	"text/plain": {
+																		"schema": {
+																			"type": "string",
+																			"example": "hi"
+																		}
+																	}
+																}
+															},
+															"401": {
+																"description": "Authorization information is missing or invalid."
+															},
+															"404": {
+																"description": "Requested resouce not found."
+															},
+															"405": {
+																"description": "Method not allowed. Check Authorization"
+															},
+															"5XX": {
+																"description": "Unexpected error."
+															}
+														}
+													}
+												}
+											}`
 )
 
 // NewTest creates a new FSTest object

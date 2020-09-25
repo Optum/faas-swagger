@@ -3,10 +3,10 @@
 package e2e
 
 import (
-	"fmt"
-	"gotest.tools/assert"
-	"testing"
 	"encoding/json"
+	"testing"
+
+	"gotest.tools/assert"
 
 	"github.com/ghodss/yaml"
 	"github.com/optum/faas-swagger/lib/test"
@@ -31,13 +31,18 @@ func (it *FSTest) callHW(t *testing.T) {
 
 func (it *FSTest) checkSwaggerYamlForHW(t *testing.T) {
 	bytesOut, err := test.InvokeHTTP(it.SwaggerAddr + GO_SWAGGER_FUNCTION)
-	fmt.Println(string(bytesOut))
 	assert.NilError(t, err)
+
 	var actual, want map[string]interface{}
-	yaml.Unmarshal(bytesOut, &actual)
+
+	err := yaml.Unmarshal(bytesOut, &actual)
+	assert.NilError(t, err)
 	paths := (actual["paths"]).(map[string]interface{})
-	actualDoc := paths["/go-hw"]
-	json.Unmarshal([]byte(GO_HW_SWAGGER_DOC),&want)
-	wantDoc := paths["/go-hw"]
+	actualDoc := paths[GO_HW_FUNCTION]
+
+	err = json.Unmarshal([]byte(GO_HW_SWAGGER_DOC), &want)
+	assert.NilError(t, err)
+	wantDoc := paths[GO_HW_FUNCTION]
+
 	assert.DeepEqual(t, &wantDoc, &actualDoc)
 }
