@@ -14,6 +14,7 @@ spec:
   - name: http
     port: 8080
     targetPort: 8080
+    nodePort: 31113
   selector:
     app: of-swagger-ui
 ---
@@ -47,6 +48,6 @@ spec:
         - name: OPENFAAS_GATEWAY
           value: "http://gateway.openfaas:8080"
         image: ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

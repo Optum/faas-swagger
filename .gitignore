@@ -38,4 +38,5 @@ todo/
 out
 
 release/
-vendor/
+
+kind.sh

@@ -2,6 +2,7 @@ package swagger
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -95,6 +96,9 @@ func (c *SwaggerConstructor) GetSwaggerYAML() ([]byte, error) {
 	fndata, err := c.getFunctionsList()
 	if err != nil {
 		return nil, err
+	}
+	if len(fndata) == 0 {
+		return nil, fmt.Errorf("received empty functions list from the gateway")
 	}
 	for _, fn := range fndata {
 		anns := *fn.Annotations

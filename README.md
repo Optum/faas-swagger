@@ -39,7 +39,7 @@ Once the component is created access the ui at `/swaggerui/` path.
 
 ### Usage
 
-Add your api spec (json format) in the function descriptor(stack.yaml) as annotation. Use this [example](./example.yaml).
+Add your api spec (json format) in the function descriptor(stack.yaml) as annotation. Use this [example](./lib/test/test-files/example/example.yaml).
 
 After deploying your function with this annotation, you should be able see the paths in swagger ui
 
