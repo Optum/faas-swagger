@@ -131,8 +131,7 @@ jobs:
       run: |
         export GO111MODULE=on
         sed "s#ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy#ko.local/swaggerui-proxy#g" config/100-swaggerui-proxy.yaml > temp.yaml
-        ko publish -B ./cmd/swaggerui-proxy --push=false --local
-        kind load docker-image ko.local/swaggerui-proxy
+        ko publish -B ./cmd/swaggerui-proxy
         kubectl apply -f temp.yaml
         kubectl get pods --all-namespaces
         kubectl wait pod --for=condition=Ready --timeout=180s -n of-swagger-ui -l '!job-name'
