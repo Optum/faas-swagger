@@ -117,12 +117,11 @@ jobs:
         BAP=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-password}'| base64 --decode) )
         BAU=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-user}'| base64 --decode) )
         kubectl create secret generic basic-auth --from-literal basic-auth-password=$BAP  --from-literal basic-auth-user=$BAU -n openfaas-fn
-        faas-cli login -u $BAU -p $BAP
-        faas-cli list
         cd function
         kubectl create secret generic swagger --from-file=swagger.yaml -n openfaas-fn
         faas-cli build -f faas-swagger.yaml
         kind load docker-image faas-swagger-fn
+        faas-cli login -u $BAU -p $BAP
         faas-cli deploy -f faas-swagger.yaml
         faas-cli deploy -f ./../lib/test/test-files/example/example.yaml
         cd ..
