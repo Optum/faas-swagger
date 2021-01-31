@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  ko-resolve:
+  e2e:
     name: e2e tests
     runs-on: ubuntu-latest
     strategy:
@@ -118,6 +118,7 @@ jobs:
         BAU=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-user}'| base64 --decode) )
         kubectl create secret generic basic-auth --from-literal basic-auth-password=$BAP  --from-literal basic-auth-user=$BAU -n openfaas-fn
         faas-cli login -u $BAU -p $BAP
+        faas-cli list
         cd function
         kubectl create secret generic swagger --from-file=swagger.yaml -n openfaas-fn
         faas-cli build -f faas-swagger.yaml
