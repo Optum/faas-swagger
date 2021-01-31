@@ -130,7 +130,7 @@ jobs:
       working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         export GO111MODULE=on
-        kubectl apply -RBf config/
+        ko apply -RBf config/
         kubectl get pods --all-namespaces
         kubectl wait pod --for=condition=Ready --timeout=180s -n of-swagger-ui -l '!job-name'
     - name: Run e2e Tests
