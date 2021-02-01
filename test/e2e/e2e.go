@@ -17,7 +17,7 @@ var (
 const (
 	GO_HW_FUNCTION      = "/go-hw"
 	GO_SWAGGER_FUNCTION = "/faas-swagger-fn"
-	GO_HW_REPONSE       = "Hello, Go. You said: \n"
+	GO_HW_REPONSE       = `{"status":"Status OK"}`
 	GO_HW_SWAGGER_DOC   = `{
 												"/go-hw": {
 													"get": {

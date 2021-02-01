@@ -6,7 +6,7 @@ functions:
   go-hw:
     lang: go
     handler: ./go-hw
-    image: murugappans/go-hw:latest
+    image: ghcr.io/itsmurugappan/hw:latest
     environment:
       write_debug: true
     annotations:

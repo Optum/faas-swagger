@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  ko-resolve:
+  e2e:
     name: e2e tests
     runs-on: ubuntu-latest
     strategy:
@@ -32,7 +32,7 @@ jobs:
     env:
       GOPATH: ${{ github.workspace }}
       GO111MODULE: off
-      KO_DOCKER_REPO: ko.local
+      KO_DOCKER_REPO: kind.local
 
     steps:
     - name: Set up Go 1.15.x
@@ -42,7 +42,11 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        GO111MODULE=on go get github.com/google/ko/cmd/ko@master
+        echo '::group:: install ko'
+        curl -L https://github.com/google/ko/releases/download/v0.6.0/ko_0.6.0_Linux_x86_64.tar.gz | tar xzf - ko
+        chmod +x ./ko
+        sudo mv ko /usr/local/bin
+        echo '::endgroup::'
     - name: Check out code onto GOPATH
       uses: actions/checkout@v2
       with:
@@ -113,11 +117,11 @@ jobs:
         BAP=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-password}'| base64 --decode) )
         BAU=( $(kubectl get secret basic-auth -n openfaas -ojsonpath='{.data.basic-auth-user}'| base64 --decode) )
         kubectl create secret generic basic-auth --from-literal basic-auth-password=$BAP  --from-literal basic-auth-user=$BAU -n openfaas-fn
-        faas-cli login -u $BAU -p $BAP
         cd function
         kubectl create secret generic swagger --from-file=swagger.yaml -n openfaas-fn
         faas-cli build -f faas-swagger.yaml
         kind load docker-image faas-swagger-fn
+        faas-cli login -u $BAU -p $BAP
         faas-cli deploy -f faas-swagger.yaml
         faas-cli deploy -f ./../lib/test/test-files/example/example.yaml
         cd ..
@@ -126,10 +130,7 @@ jobs:
       working-directory: ./src/github.com/optum/faas-swaggger
       run: |
         export GO111MODULE=on
-        sed "s#ko://github.com/optum/faas-swagger/cmd/swaggerui-proxy#ko.local/swaggerui-proxy#g" config/100-swaggerui-proxy.yaml > temp.yaml
-        ko publish -B ./cmd/swaggerui-proxy --push=false --local
-        kind load docker-image ko.local/swaggerui-proxy
-        kubectl apply -f temp.yaml
+        ko apply -RBf config/
         kubectl get pods --all-namespaces
         kubectl wait pod --for=condition=Ready --timeout=180s -n of-swagger-ui -l '!job-name'
     - name: Run e2e Tests
