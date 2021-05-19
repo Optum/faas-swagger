@@ -1,6 +1,6 @@
 FROM openfaas/classic-watchdog:0.18.0 as watchdog
 
-FROM docker.repo1.uhc.com/golang:1.15.12-alpine as builder
+FROM golang:1.15.12-alpine as builder
 
 # Allows you to add additional packages via build-arg
 ARG ADDITIONAL_PACKAGE
